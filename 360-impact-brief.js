@@ -14,7 +14,7 @@
     const CONFIG = {
         DEBUG: false, // Set to true for development
         TOAST_DURATION: 3000,
-        CHART_ANIMATION_DURATION: 750,
+        CHART_ANIMATION_DURATION: 300, // Fast animation for quick loading
         MOBILE_BREAKPOINT: 768
     };
 
@@ -824,23 +824,13 @@
             // Initialize timeline
             initializeTimeline();
 
-            // Initialize charts (wait for Chart.js to load)
+            // Initialize charts immediately - Chart.js is already loaded in <head>
             if (typeof Chart !== 'undefined') {
                 initializeCharts();
+                log.success('Charts loaded successfully');
             } else {
-                // Wait for Chart.js to load
-                let chartLoadAttempts = 0;
-                const chartLoadInterval = setInterval(() => {
-                    chartLoadAttempts++;
-                    if (typeof Chart !== 'undefined') {
-                        clearInterval(chartLoadInterval);
-                        initializeCharts();
-                    } else if (chartLoadAttempts > 20) {
-                        clearInterval(chartLoadInterval);
-                        log.error('Chart.js failed to load after 20 attempts');
-                        toast.show('Charts could not be loaded', 'error');
-                    }
-                }, 100);
+                log.error('Chart.js not loaded - check CDN connection');
+                toast.show('Charts could not be loaded. Please check your internet connection.', 'error');
             }
 
             log.success('✓ 360 Impact Brief initialized successfully');
