@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Features and Needs Matrix for Marine Data Analytics Platform - Feasibility Assessment">
+    <title>Features and Needs Matrix - Marine Data Analytics</title>
+    <style>
+        :root {
+            /* Enterprise color palette */
+            --primary-900: #0d1b2a;
+            --primary-800: #1b263b;
+            --primary-700: #1e3a5f;
+            --primary-600: #2a5298;
+            --primary-500: #3d6cb9;
+            --primary-400: #5b8bd4;
+
+            /* Semantic colors */
+            --success-600: #059669;
+            --success-500: #10b981;
+            --success-100: #d1fae5;
+            --warning-600: #d97706;
+            --warning-500: #f59e0b;
+            --warning-100: #fef3c7;
+            --info-600: #0284c7;
+            --info-500: #0ea5e9;
+            --info-100: #e0f2fe;
+            --neutral-600: #52525b;
+            --neutral-500: #71717a;
+            --neutral-100: #f4f4f5;
+
+            /* UI colors */
+            --surface-primary: #ffffff;
+            --surface-secondary: #f8fafc;
+            --surface-tertiary: #f1f5f9;
+            --border-light: #e2e8f0;
+            --border-medium: #cbd5e1;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+            /* Typography */
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Consolas', monospace;
+
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-base: 200ms ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-700) 100%);
+            min-height: 100vh;
+            padding: var(--space-4);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Skip link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-900);
+            color: white;
+            padding: var(--space-2) var(--space-4);
+            z-index: 100;
+            transition: top var(--transition-fast);
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1920px;
+            background: var(--surface-primary);
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 2rem);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, var(--primary-900) 0%, var(--primary-700) 100%);
+            color: white;
+            padding: var(--space-5) var(--space-6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+        }
+
+        .header-content h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            margin-bottom: var(--space-1);
+        }
+
+        .header-content .subtitle {
+            font-size: 0.875rem;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .header-badge {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.1);
+            padding: var(--space-2) var(--space-3);
+            border-radius: 6px;
+            backdrop-filter: blur(4px);
+        }
+
+        .header-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--success-500);
+            border-radius: 50%;
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: var(--space-4);
+            background: var(--surface-secondary);
+            gap: var(--space-4);
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--space-3);
+        }
+
+        .stat-card {
+            background: var(--surface-primary);
+            border-radius: 8px;
+            padding: var(--space-4);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: all var(--transition-base);
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-400);
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-700);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 0.6875rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: var(--space-1);
+            font-weight: 500;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            align-items: center;
+            padding: var(--space-3) var(--space-4);
+            background: var(--surface-primary);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
+
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .toolbar-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .filter-select {
+            font-family: inherit;
+            font-size: 0.8125rem;
+            padding: var(--space-2) var(--space-3);
+            border: 1px solid var(--border-medium);
+            border-radius: 6px;
+            background: var(--surface-primary);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            min-width: 140px;
+        }
+
+        .filter-select:hover {
+            border-color: var(--primary-500);
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn {
+            font-family: inherit;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            padding: var(--space-2) var(--space-3);
+            border-radius: 6px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .btn-secondary {
+            background: var(--surface-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border-medium);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-light);
+            border-color: var(--primary-500);
+        }
+
+        .btn-secondary:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--primary-600);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-700);
+        }
+
+        .btn-primary:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .toolbar-spacer {
+            flex: 1;
+        }
+
+        /* Requesters */
+        .requesters-section {
+            padding: var(--space-3) var(--space-4);
+            background: var(--surface-primary);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
+
+        .requesters-label {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-2);
+        }
+
+        .requesters-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+        }
+
+        .requester-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        .requester-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Matrix container */
+        .matrix-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--surface-primary);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .matrix-wrapper {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            border: 1px solid var(--border-light);
+            padding: var(--space-2);
+            text-align: center;
+            transition: background-color var(--transition-fast);
+        }
+
+        /* Header cells */
+        .matrix-table thead th {
+            background: var(--surface-tertiary);
+            font-weight: 600;
+            color: var(--text-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .matrix-table thead th:first-child {
+            left: 0;
+            z-index: 20;
+            text-align: left;
+            padding-left: var(--space-4);
+        }
+
+        .matrix-table thead th.feature-header {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            width: 48px;
+            min-width: 48px;
+            height: 140px;
+            padding: var(--space-3) var(--space-1);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            background: var(--surface-primary);
+            border-top: 3px solid var(--primary-600);
+            color: var(--text-primary);
+        }
+
+        .matrix-table thead th.feature-header:hover {
+            background: var(--info-100);
+        }
+
+        /* Row headers (needs) */
+        .matrix-table tbody th {
+            text-align: left;
+            background: var(--surface-primary);
+            font-weight: 500;
+            padding: var(--space-2) var(--space-3);
+            min-width: 220px;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+        }
+
+        .matrix-table tbody tr:hover th,
+        .matrix-table tbody tr:hover td {
+            background-color: rgba(59, 130, 246, 0.04);
+        }
+
+        .matrix-table tbody tr.highlight-row th,
+        .matrix-table tbody tr.highlight-row td {
+            background-color: rgba(59, 130, 246, 0.08);
+        }
+
+        .matrix-table tbody tr[data-hidden="true"] {
+            display: none;
+        }
+
+        .need-content {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .need-indicator {
+            width: 4px;
+            height: 20px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .need-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .need-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.75rem;
+        }
+
+        .need-category {
+            font-size: 0.625rem;
+            color: var(--text-tertiary);
+            font-weight: 400;
+        }
+
+        /* Need type colors */
+        .need-opportunity-high .need-indicator { background: var(--success-600); }
+        .need-opportunity-med .need-indicator { background: var(--warning-600); }
+        .need-expected .need-indicator { background: var(--info-600); }
+        .need-accessory .need-indicator { background: var(--neutral-500); }
+
+        /* Cell content */
+        .matrix-table td {
+            background: var(--surface-primary);
+        }
+
+        .matrix-table td.empty-cell {
+            background: var(--surface-secondary);
+        }
+
+        .check-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: var(--success-600);
+            border-radius: 4px;
+            color: white;
+            font-size: 0.6875rem;
+            font-weight: bold;
+        }
+
+        .matrix-table td:hover .check-mark {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Column highlight */
+        .highlight-col {
+            background-color: rgba(59, 130, 246, 0.08) !important;
+        }
+
+        /* Legend */
+        .legend-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--space-4);
+            padding: var(--space-3) var(--space-4);
+            background: var(--surface-primary);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        /* Coverage tooltip */
+        .coverage-info {
+            position: absolute;
+            background: var(--primary-900);
+            color: white;
+            padding: var(--space-2) var(--space-3);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+            z-index: 100;
+            white-space: nowrap;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .coverage-info.visible {
+            opacity: 1;
+        }
+
+        /* Footer */
+        .footer {
+            padding: var(--space-3) var(--space-4);
+            background: var(--surface-tertiary);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .footer-meta {
+            display: flex;
+            gap: var(--space-4);
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .presentation-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .toolbar,
+            .btn,
+            .skip-link {
+                display: none !important;
+            }
+
+            .matrix-table {
+                font-size: 8pt;
+            }
+
+            .matrix-table thead th.feature-header {
+                height: 100px;
+            }
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 1024px) {
+            .header {
+                padding: var(--space-4);
+            }
+
+            .header-content h1 {
+                font-size: 1.25rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .toolbar-spacer {
+                display: none;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                padding: var(--space-2);
+            }
+
+            main {
+                padding: var(--space-3);
+                gap: var(--space-3);
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .matrix-table thead th.feature-header {
+                height: 100px;
+                font-size: 0.625rem;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: var(--space-2);
+                text-align: center;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus visible */
+        :focus-visible {
+            outline: 2px solid var(--primary-500);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <a href="#matrix" class="skip-link">Skip to matrix</a>
+
+    <div class="presentation-container">
+        <header class="header">
+            <div class="header-content">
+                <h1>Features and Needs Matrix</h1>
+                <div class="subtitle">Marine Data Analytics Platform — Step 11: Feasibility Assessment</div>
+            </div>
+            <div class="header-badge">
+                Vianeo Innovation Framework
+            </div>
+        </header>
+
+        <main>
+            <div class="stats-bar" role="region" aria-label="Key metrics">
+                <div class="stat-card">
+                    <div class="stat-value" id="feature-count">11</div>
+                    <div class="stat-label">Core Features</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="need-count">16</div>
+                    <div class="stat-label">Key Needs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Requesters</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="coverage-percent">92%</div>
+                    <div class="stat-label">Need Coverage</div>
+                </div>
+            </div>
+
+            <div class="toolbar" role="toolbar" aria-label="Matrix controls">
+                <div class="toolbar-group">
+                    <label class="toolbar-label" for="category-filter">Category</label>
+                    <select id="category-filter" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <option value="opportunity-high">High Opportunity</option>
+                        <option value="opportunity-med">Medium Opportunity</option>
+                        <option value="expected">Expected</option>
+                        <option value="accessory">Accessory</option>
+                    </select>
+                </div>
+
+                <div class="toolbar-group">
+                    <label class="toolbar-label" for="coverage-filter">Coverage</label>
+                    <select id="coverage-filter" class="filter-select">
+                        <option value="all">All Needs</option>
+                        <option value="high">High Coverage (≥5)</option>
+                        <option value="medium">Medium Coverage (3-4)</option>
+                        <option value="low">Low Coverage (≤2)</option>
+                    </select>
+                </div>
+
+                <div class="toolbar-spacer"></div>
+
+                <div class="toolbar-group">
+                    <button type="button" class="btn btn-secondary" id="reset-filters" title="Reset all filters">
+                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Reset
+                    </button>
+                    <button type="button" class="btn btn-primary" id="export-btn" title="Export as image">
+                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="requesters-section">
+                <div class="requesters-label">Key Requesters</div>
+                <div class="requesters-list">
+                    <div class="requester-item">
+                        <div class="requester-dot" style="background: #0284c7;"></div>
+                        <span>Marine Environmental Expert</span>
+                    </div>
+                    <div class="requester-item">
+                        <div class="requester-dot" style="background: #059669;"></div>
+                        <span>Aquaculturist</span>
+                    </div>
+                    <div class="requester-item">
+                        <div class="requester-dot" style="background: #d97706;"></div>
+                        <span>Marine Engineer</span>
+                    </div>
+                    <div class="requester-item">
+                        <div class="requester-dot" style="background: #7c3aed;"></div>
+                        <span>Marine Insurer</span>
+                    </div>
+                    <div class="requester-item">
+                        <div class="requester-dot" style="background: #dc2626;"></div>
+                        <span>Marine Biologist</span>
+                    </div>
+                </div>
+            </div>
+
+            <section class="matrix-section" id="matrix" aria-label="Features and needs matrix">
+                <div class="matrix-wrapper">
+                    <table class="matrix-table" role="grid" aria-label="Feature coverage by need">
+                        <thead>
+                            <tr>
+                                <th scope="col">Needs</th>
+                                <th scope="col" class="feature-header" data-feature="0">Data Analytics Platform</th>
+                                <th scope="col" class="feature-header" data-feature="1">IoT Sensor Integration</th>
+                                <th scope="col" class="feature-header" data-feature="2">Compliance Automation</th>
+                                <th scope="col" class="feature-header" data-feature="3">Secure Data Transfer</th>
+                                <th scope="col" class="feature-header" data-feature="4">Alert & Notification System</th>
+                                <th scope="col" class="feature-header" data-feature="5">Fleet Management Module</th>
+                                <th scope="col" class="feature-header" data-feature="6">Predictive Analytics Engine</th>
+                                <th scope="col" class="feature-header" data-feature="7">API Integration Layer</th>
+                                <th scope="col" class="feature-header" data-feature="8">Multi-language Support</th>
+                                <th scope="col" class="feature-header" data-feature="9">Mobile Application</th>
+                                <th scope="col" class="feature-header" data-feature="10">Collaboration Tools</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-category="opportunity-high" data-coverage="4">
+                                <th scope="row" class="need-opportunity-high">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Data analytics and reporting</span>
+                                            <span class="need-category">High Opportunity</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="expected" data-coverage="4">
+                                <th scope="row" class="need-expected">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Alerts and notifications</span>
+                                            <span class="need-category">Expected</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="opportunity-med" data-coverage="5">
+                                <th scope="row" class="need-opportunity-med">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Automation of validating data</span>
+                                            <span class="need-category">Medium Opportunity</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="expected" data-coverage="4">
+                                <th scope="row" class="need-expected">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Fleet management & scheduling</span>
+                                            <span class="need-category">Expected</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="opportunity-high" data-coverage="4">
+                                <th scope="row" class="need-opportunity-high">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Multi-language support</span>
+                                            <span class="need-category">High Opportunity</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                            </tr>
+                            <tr data-category="expected" data-coverage="4">
+                                <th scope="row" class="need-expected">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Automate compliance check</span>
+                                            <span class="need-category">Expected</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="opportunity-high" data-coverage="8">
+                                <th scope="row" class="need-opportunity-high">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">General automation</span>
+                                            <span class="need-category">High Opportunity</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="opportunity-med" data-coverage="5">
+                                <th scope="row" class="need-opportunity-med">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Interoperability</span>
+                                            <span class="need-category">Medium Opportunity</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="expected" data-coverage="5">
+                                <th scope="row" class="need-expected">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Secure data transfer/storing</span>
+                                            <span class="need-category">Expected</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="expected" data-coverage="8">
+                                <th scope="row" class="need-expected">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Data tracking and monitoring</span>
+                                            <span class="need-category">Expected</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="opportunity-high" data-coverage="5">
+                                <th scope="row" class="need-opportunity-high">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Collaboration tools</span>
+                                            <span class="need-category">High Opportunity</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                            </tr>
+                            <tr data-category="opportunity-med" data-coverage="2">
+                                <th scope="row" class="need-opportunity-med">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Mobile compatibility</span>
+                                            <span class="need-category">Medium Opportunity</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="accessory" data-coverage="2">
+                                <th scope="row" class="need-accessory">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Automatic voyage planning</span>
+                                            <span class="need-category">Accessory</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="expected" data-coverage="4">
+                                <th scope="row" class="need-expected">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Financial & accounting mgmt</span>
+                                            <span class="need-category">Expected</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="opportunity-high" data-coverage="8">
+                                <th scope="row" class="need-opportunity-high">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Port and terminal mgmt</span>
+                                            <span class="need-category">High Opportunity</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                            <tr data-category="expected" data-coverage="5">
+                                <th scope="row" class="need-expected">
+                                    <div class="need-content">
+                                        <span class="need-indicator"></span>
+                                        <div class="need-text">
+                                            <span class="need-name">Insurance and claims mgmt</span>
+                                            <span class="need-category">Expected</span>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td><span class="check-mark" aria-label="Supported">✓</span></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                                <td class="empty-cell"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="coverage-info" id="coverage-tooltip"></div>
+            </section>
+
+            <div class="legend-section" role="region" aria-label="Legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--success-600);"></div>
+                    <span>High Opportunity</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--warning-600);"></div>
+                    <span>Medium Opportunity</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--info-600);"></div>
+                    <span>Expected</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--neutral-500);"></div>
+                    <span>Accessory</span>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-meta">
+                <span>Last updated: November 2024</span>
+                <span>Version 2.0</span>
+            </div>
+            <span>Marine Data Analytics Platform — Feasibility Assessment</span>
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // DOM Elements
+            const categoryFilter = document.getElementById('category-filter');
+            const coverageFilter = document.getElementById('coverage-filter');
+            const resetBtn = document.getElementById('reset-filters');
+            const exportBtn = document.getElementById('export-btn');
+            const tooltip = document.getElementById('coverage-tooltip');
+            const table = document.querySelector('.matrix-table');
+            const rows = table.querySelectorAll('tbody tr');
+            const featureHeaders = table.querySelectorAll('.feature-header');
+
+            // Feature names for tooltips
+            const featureNames = [
+                'Data Analytics Platform',
+                'IoT Sensor Integration',
+                'Compliance Automation',
+                'Secure Data Transfer',
+                'Alert & Notification System',
+                'Fleet Management Module',
+                'Predictive Analytics Engine',
+                'API Integration Layer',
+                'Multi-language Support',
+                'Mobile Application',
+                'Collaboration Tools'
+            ];
+
+            // Filter functions
+            function applyFilters() {
+                const categoryValue = categoryFilter.value;
+                const coverageValue = coverageFilter.value;
+                let visibleCount = 0;
+
+                rows.forEach(row => {
+                    const category = row.dataset.category;
+                    const coverage = parseInt(row.dataset.coverage, 10);
+
+                    let showByCategory = categoryValue === 'all' || category === categoryValue;
+                    let showByCoverage = true;
+
+                    if (coverageValue === 'high') {
+                        showByCoverage = coverage >= 5;
+                    } else if (coverageValue === 'medium') {
+                        showByCoverage = coverage >= 3 && coverage <= 4;
+                    } else if (coverageValue === 'low') {
+                        showByCoverage = coverage <= 2;
+                    }
+
+                    const shouldShow = showByCategory && showByCoverage;
+                    row.dataset.hidden = !shouldShow;
+
+                    if (shouldShow) visibleCount++;
+                });
+
+                // Update visible count
+                document.getElementById('need-count').textContent = visibleCount;
+            }
+
+            // Event listeners for filters
+            categoryFilter.addEventListener('change', applyFilters);
+            coverageFilter.addEventListener('change', applyFilters);
+
+            // Reset filters
+            resetBtn.addEventListener('click', () => {
+                categoryFilter.value = 'all';
+                coverageFilter.value = 'all';
+                applyFilters();
+                document.getElementById('need-count').textContent = '16';
+            });
+
+            // Column highlighting on feature header hover
+            featureHeaders.forEach((header, index) => {
+                header.addEventListener('mouseenter', () => {
+                    const colIndex = index + 1; // +1 for the row header column
+                    rows.forEach(row => {
+                        const cell = row.cells[colIndex];
+                        if (cell) cell.classList.add('highlight-col');
+                    });
+
+                    // Show tooltip with feature coverage
+                    const coverageCount = Array.from(rows).filter(row => {
+                        const cell = row.cells[colIndex];
+                        return cell && cell.querySelector('.check-mark');
+                    }).length;
+
+                    tooltip.textContent = `${featureNames[index]}: ${coverageCount} needs covered`;
+                    tooltip.classList.add('visible');
+
+                    const rect = header.getBoundingClientRect();
+                    const containerRect = document.querySelector('.matrix-section').getBoundingClientRect();
+                    tooltip.style.left = `${rect.left - containerRect.left + rect.width / 2}px`;
+                    tooltip.style.top = `${rect.bottom - containerRect.top + 8}px`;
+                    tooltip.style.transform = 'translateX(-50%)';
+                });
+
+                header.addEventListener('mouseleave', () => {
+                    const colIndex = index + 1;
+                    rows.forEach(row => {
+                        const cell = row.cells[colIndex];
+                        if (cell) cell.classList.remove('highlight-col');
+                    });
+                    tooltip.classList.remove('visible');
+                });
+            });
+
+            // Row highlighting
+            rows.forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    row.classList.add('highlight-row');
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.classList.remove('highlight-row');
+                });
+            });
+
+            // Export functionality
+            exportBtn.addEventListener('click', () => {
+                // Simple print-based export
+                window.print();
+            });
+
+            // Keyboard navigation for table
+            table.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' ||
+                    e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+
+                    const focusedCell = document.activeElement;
+                    if (!focusedCell.closest('td, th')) return;
+
+                    const row = focusedCell.closest('tr');
+                    const cellIndex = Array.from(row.cells).indexOf(focusedCell);
+                    const rowIndex = Array.from(table.querySelectorAll('tr')).indexOf(row);
+
+                    let targetRow, targetCell;
+
+                    switch (e.key) {
+                        case 'ArrowRight':
+                            targetCell = row.cells[cellIndex + 1];
+                            break;
+                        case 'ArrowLeft':
+                            targetCell = row.cells[cellIndex - 1];
+                            break;
+                        case 'ArrowDown':
+                            targetRow = table.querySelectorAll('tr')[rowIndex + 1];
+                            if (targetRow) targetCell = targetRow.cells[cellIndex];
+                            break;
+                        case 'ArrowUp':
+                            targetRow = table.querySelectorAll('tr')[rowIndex - 1];
+                            if (targetRow) targetCell = targetRow.cells[cellIndex];
+                            break;
+                    }
+
+                    if (targetCell) {
+                        targetCell.setAttribute('tabindex', '0');
+                        targetCell.focus();
+                        focusedCell.setAttribute('tabindex', '-1');
+                    }
+                }
+            });
+
+            // Make first cell focusable for keyboard nav
+            const firstCell = table.querySelector('tbody th');
+            if (firstCell) firstCell.setAttribute('tabindex', '0');
+
+            // Calculate and display actual coverage percentage
+            function calculateCoverage() {
+                let totalNeeds = rows.length;
+                let coveredNeeds = 0;
+
+                rows.forEach(row => {
+                    const hasCheck = row.querySelector('.check-mark');
+                    if (hasCheck) coveredNeeds++;
+                });
+
+                // All needs have at least one feature, so coverage is based on
+                // needs that have adequate feature support (3+ features)
+                let adequatelyCovered = 0;
+                rows.forEach(row => {
+                    const coverage = parseInt(row.dataset.coverage, 10);
+                    if (coverage >= 2) adequatelyCovered++;
+                });
+
+                const percentage = Math.round((adequatelyCovered / totalNeeds) * 100);
+                document.getElementById('coverage-percent').textContent = percentage + '%';
+            }
+
+            calculateCoverage();
+        })();
+    </script>
+</body>
+</html>
