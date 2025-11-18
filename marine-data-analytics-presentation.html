@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources & Risk Assessment - Marine Data Analytics Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0c1445 0%, #1a237e 50%, #283593 100%);
+            --accent-blue: #2196f3;
+            --accent-cyan: #00bcd4;
+            --accent-teal: #009688;
+            --success-green: #10b981;
+            --warning-amber: #f59e0b;
+            --danger-red: #ef4444;
+            --purple-accent: #7c3aed;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(33, 150, 243, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 188, 212, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            animation: backgroundPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1920px;
+            aspect-ratio: 16/9;
+            background: var(--glass-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow-strong);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #01579b 100%);
+            color: white;
+            padding: 36px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1) 50%, transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #ffffff 0%, #e3f2fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 8px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .header-meta {
+            text-align: right;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-meta .framework {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.95;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .header-meta .framework::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .header-meta .date {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            padding: 28px;
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            overflow: auto;
+        }
+
+        .main-panel {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 24px;
+        }
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid transparent;
+            background: linear-gradient(90deg, #1e293b, #1e293b) padding-box,
+                        linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)) border-box;
+            border-image: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)) 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 2px;
+        }
+
+        /* Resource Table Styles */
+        .resource-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 12px;
+        }
+
+        .resource-table thead {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        .resource-table th {
+            padding: 12px 14px;
+            text-align: left;
+            font-weight: 600;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .resource-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
+        }
+
+        .resource-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .resource-table tbody tr:hover {
+            background: linear-gradient(90deg, rgba(33, 150, 243, 0.05), rgba(0, 188, 212, 0.05));
+        }
+
+        .resource-table tbody tr:hover td {
+            border-bottom-color: rgba(33, 150, 243, 0.2);
+        }
+
+        .resource-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            gap: 4px;
+        }
+
+        .resource-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .internal {
+            background: rgba(16, 185, 129, 0.12);
+            color: #059669;
+        }
+
+        .internal::before {
+            background: #10b981;
+        }
+
+        .external {
+            background: rgba(245, 158, 11, 0.12);
+            color: #d97706;
+        }
+
+        .external::before {
+            background: #f59e0b;
+        }
+
+        .hybrid {
+            background: rgba(124, 58, 237, 0.12);
+            color: #7c3aed;
+        }
+
+        .hybrid::before {
+            background: #8b5cf6;
+        }
+
+        /* Risk Matrix Styles */
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: 70px repeat(3, 1fr);
+            grid-template-rows: repeat(4, 85px);
+            gap: 2px;
+            background: #e2e8f0;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .risk-cell {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            padding: 8px;
+            text-align: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .risk-header {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            font-weight: 700;
+            color: #475569;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .risk-low {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.08));
+        }
+
+        .risk-medium {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.08));
+        }
+
+        .risk-high {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.08));
+        }
+
+        .risk-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 9px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .risk-item:hover {
+            transform: scale(1.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Budget Breakdown Styles */
+        .budget-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .budget-item {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            padding: 16px;
+            border-radius: 12px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .budget-item:nth-child(1) { border-left-color: var(--accent-blue); }
+        .budget-item:nth-child(2) { border-left-color: var(--accent-cyan); }
+        .budget-item:nth-child(3) { border-left-color: var(--purple-accent); }
+        .budget-item:nth-child(4) { border-left-color: var(--success-green); }
+
+        .budget-item:hover {
+            transform: translateX(4px);
+        }
+
+        .budget-label {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .budget-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .budget-total {
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .budget-total-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .budget-total-label {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .budget-total-value {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Team Grid Styles */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .team-member {
+            background: linear-gradient(135deg, #f8fafc, #ffffff);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
+        }
+
+        .team-member:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+            border-color: rgba(33, 150, 243, 0.2);
+        }
+
+        .team-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .team-info {
+            flex: 1;
+        }
+
+        .team-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .team-role {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .team-summary {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .team-summary strong {
+            color: #1e293b;
+        }
+
+        /* Milestone Timeline Styles */
+        .milestone-timeline {
+            position: relative;
+            padding-left: 35px;
+        }
+
+        .milestone-timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 24px;
+            bottom: 24px;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 2px;
+        }
+
+        .milestone-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .milestone-item:hover {
+            transform: translateX(4px);
+        }
+
+        .milestone-item::before {
+            content: '';
+            position: absolute;
+            left: -27px;
+            top: 10px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--accent-blue);
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .milestone-item.completed::before {
+            background: var(--success-green);
+            border-color: var(--success-green);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+        }
+
+        .milestone-item:hover::before {
+            transform: scale(1.2);
+        }
+
+        .milestone-date {
+            font-size: 10px;
+            color: #64748b;
+            margin-bottom: 4px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .milestone-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* KPI Grid Styles */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .kpi-card {
+            text-align: center;
+            padding: 16px 12px;
+            background: linear-gradient(135deg, #f8fafc, #ffffff);
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .kpi-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .kpi-value {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .kpi-label {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 6px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .presentation-container {
+                aspect-ratio: auto;
+                min-height: 100vh;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .presentation-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .card:hover {
+                transform: none;
+                box-shadow: var(--shadow-soft);
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #1976d2, #0097a7);
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="header">
+            <div class="header-content">
+                <h1>Resource Planning & Risk Assessment</h1>
+                <div class="subtitle">Marine Data Analytics Platform - Step 11 Feasibility Analysis</div>
+            </div>
+            <div class="header-meta">
+                <div class="framework">Vianeo Framework</div>
+                <div class="date">May 2024</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="main-panel">
+                <!-- Resource Requirements Table -->
+                <div class="card">
+                    <div class="card-title">Resource Requirements by Functionality (11 Core Features)</div>
+                    <table class="resource-table">
+                        <thead>
+                            <tr>
+                                <th>Functionality</th>
+                                <th>Human Resources</th>
+                                <th>Technical Stack</th>
+                                <th>Timeline</th>
+                                <th>Source</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Data Analytics Platform</strong></td>
+                                <td>2 Data Scientists, 1 Backend Dev</td>
+                                <td>Python, PostgreSQL, Grafana</td>
+                                <td>Available</td>
+                                <td><span class="resource-badge internal">Internal</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Compliance Automation</strong></td>
+                                <td>1 Regulatory Expert, 1 Frontend Dev</td>
+                                <td>React, REST API, Document DB</td>
+                                <td>Available</td>
+                                <td><span class="resource-badge hybrid">Hybrid</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Secure Data Transfer</strong></td>
+                                <td>1 Security Engineer, 1 DevOps</td>
+                                <td>TLS 1.3, Vault, Kubernetes</td>
+                                <td>Available</td>
+                                <td><span class="resource-badge internal">Internal</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>IoT Sensor Integration</strong></td>
+                                <td>1 IoT Engineer, 1 Systems Architect</td>
+                                <td>MQTT, Node-RED, TimescaleDB</td>
+                                <td>2 months</td>
+                                <td><span class="resource-badge external">External</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Alert & Notification System</strong></td>
+                                <td>1 Backend Dev, 1 UX Designer</td>
+                                <td>WebSocket, Redis, SMS/Email API</td>
+                                <td>1 month</td>
+                                <td><span class="resource-badge internal">Internal</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fleet Management Module</strong></td>
+                                <td>2 Full-stack Devs</td>
+                                <td>Vue.js, GraphQL, PostGIS</td>
+                                <td>2 months</td>
+                                <td><span class="resource-badge internal">Internal</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>API Integration Layer</strong></td>
+                                <td>1 Backend Dev, 1 API Architect</td>
+                                <td>Node.js, OpenAPI, Kong</td>
+                                <td>1 month</td>
+                                <td><span class="resource-badge internal">Internal</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Multi-language Support</strong></td>
+                                <td>1 Localization Expert</td>
+                                <td>i18n, Translation API</td>
+                                <td>1 month</td>
+                                <td><span class="resource-badge internal">Internal</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Predictive Analytics Engine</strong></td>
+                                <td>2 ML Engineers, 1 Data Engineer</td>
+                                <td>PyTorch, Spark, S3</td>
+                                <td>6 months</td>
+                                <td><span class="resource-badge external">External</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mobile Application</strong></td>
+                                <td>2 Mobile Devs, 1 UX Designer</td>
+                                <td>React Native, GraphQL</td>
+                                <td>4 months</td>
+                                <td><span class="resource-badge internal">Internal</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Collaboration Tools</strong></td>
+                                <td>1 Frontend Dev, 1 Backend Dev</td>
+                                <td>WebRTC, Socket.io, Redis</td>
+                                <td>3 months</td>
+                                <td><span class="resource-badge internal">Internal</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Risk Matrix -->
+                <div class="card">
+                    <div class="card-title">Risk Assessment Matrix (11 Core Features)</div>
+                    <div class="risk-matrix">
+                        <div class="risk-cell risk-header">Impact<br>Likelihood</div>
+                        <div class="risk-cell risk-header">Low</div>
+                        <div class="risk-cell risk-header">Medium</div>
+                        <div class="risk-cell risk-header">High</div>
+
+                        <div class="risk-cell risk-header">High</div>
+                        <div class="risk-cell risk-low"></div>
+                        <div class="risk-cell risk-medium">
+                            <div class="risk-item">R3: IoT Integration Delays</div>
+                        </div>
+                        <div class="risk-cell risk-high">
+                            <div class="risk-item">R1: Regulatory Changes</div>
+                        </div>
+
+                        <div class="risk-cell risk-header">Medium</div>
+                        <div class="risk-cell risk-low">
+                            <div class="risk-item">R5: Team Capacity</div>
+                        </div>
+                        <div class="risk-cell risk-medium">
+                            <div class="risk-item">R2: API Complexity</div>
+                            <div class="risk-item">R6: Data Migration</div>
+                        </div>
+                        <div class="risk-cell risk-high"></div>
+
+                        <div class="risk-cell risk-header">Low</div>
+                        <div class="risk-cell risk-low">
+                            <div class="risk-item">R7: UI Changes</div>
+                        </div>
+                        <div class="risk-cell risk-low">
+                            <div class="risk-item">R4: Localization</div>
+                        </div>
+                        <div class="risk-cell risk-medium"></div>
+                    </div>
+                </div>
+
+                <!-- Key Success Metrics -->
+                <div class="card">
+                    <div class="card-title">Success Metrics & KPIs</div>
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-value">95%</div>
+                            <div class="kpi-label">System Uptime</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value">&lt;2s</div>
+                            <div class="kpi-label">Query Response</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value">50K</div>
+                            <div class="kpi-label">Concurrent Users</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value">100%</div>
+                            <div class="kpi-label">GDPR Compliant</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value">24/7</div>
+                            <div class="kpi-label">Support Coverage</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value">60%</div>
+                            <div class="kpi-label">Cost Reduction</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <!-- Budget Breakdown -->
+                <div class="card">
+                    <div class="card-title">Budget Allocation</div>
+                    <div class="budget-breakdown">
+                        <div class="budget-item">
+                            <div class="budget-label">Development</div>
+                            <div class="budget-value">$240K</div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-label">Infrastructure</div>
+                            <div class="budget-value">$70K</div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-label">Partnerships</div>
+                            <div class="budget-value">$50K</div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-label">Testing/QA</div>
+                            <div class="budget-value">$35K</div>
+                        </div>
+                    </div>
+                    <div class="budget-total">
+                        <div class="budget-total-inner">
+                            <span class="budget-total-label">Total MVP Budget</span>
+                            <span class="budget-total-value">$395K</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Composition -->
+                <div class="card">
+                    <div class="card-title">Core Team (MVP Phase)</div>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="team-avatar">TL</div>
+                            <div class="team-info">
+                                <div class="team-name">Tech Lead</div>
+                                <div class="team-role">Architecture & Integration</div>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">DS</div>
+                            <div class="team-info">
+                                <div class="team-name">Data Scientists (2)</div>
+                                <div class="team-role">Analytics & ML</div>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">FE</div>
+                            <div class="team-info">
+                                <div class="team-name">Frontend Dev</div>
+                                <div class="team-role">UI/UX Implementation</div>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">BE</div>
+                            <div class="team-info">
+                                <div class="team-name">Backend Devs (2)</div>
+                                <div class="team-role">API & Services</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-summary">
+                        <strong>Total:</strong> 6 core team members + 3 external partners
+                    </div>
+                </div>
+
+                <!-- Critical Milestones -->
+                <div class="card">
+                    <div class="card-title">Critical Milestones</div>
+                    <div class="milestone-timeline">
+                        <div class="milestone-item completed">
+                            <div class="milestone-date">Week 1</div>
+                            <div class="milestone-name">Requirements Finalized</div>
+                        </div>
+                        <div class="milestone-item completed">
+                            <div class="milestone-date">Week 2</div>
+                            <div class="milestone-name">Partners Confirmed</div>
+                        </div>
+                        <div class="milestone-item">
+                            <div class="milestone-date">Month 1</div>
+                            <div class="milestone-name">Core Platform Ready</div>
+                        </div>
+                        <div class="milestone-item">
+                            <div class="milestone-date">Month 2</div>
+                            <div class="milestone-name">Integration Complete</div>
+                        </div>
+                        <div class="milestone-item">
+                            <div class="milestone-date">Month 3</div>
+                            <div class="milestone-name">MVP Launch</div>
+                        </div>
+                        <div class="milestone-item">
+                            <div class="milestone-date">Month 4</div>
+                            <div class="milestone-name">First Customer Live</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
